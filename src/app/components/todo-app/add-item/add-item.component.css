@@ -1,0 +1,116 @@
+/* Toolbar Styles */
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: #3f51b5;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brand-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+.brand-link:hover {
+  color: #0f0e0e;
+}
+
+.button {
+  font-weight: 500;
+  color: #0e0e0e;
+  transition: background-color 0.3s ease;
+  margin-right: 16px;
+
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Content Styles */
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 40px);
+  padding: 16px;
+  background-color: #f5f5f5;
+}
+
+/* Form Container Styles */
+.form-container {
+  max-width: 600px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  transition: transform 0.3s ease;
+}
+
+.form-container button[type="submit"] {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.form-container button[type="submit"]:disabled {
+  background-color: #cccccc;
+  color: #666666;
+}
+
+
+.form-container:hover {
+  transform: translateY(-5px);
+}
+
+/* Form Field Styles */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.mat-form-field:nth-of-type(1) {
+  margin-bottom: 24px;
+}
+
+.mat-datepicker-toggle {
+  margin-left: 8px;
+}
+
+mat-radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #3f51b5;
+  color: #fff;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2c387e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+button[mat-button] {
+  color: #fff;
+}
