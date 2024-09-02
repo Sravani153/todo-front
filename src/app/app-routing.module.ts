@@ -1,26 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DataBindingComponent } from './components/data-binding/data-binding.component';
-import { DirectivesComponent } from './components/directives/directives.component';
-import { ComponentCommunicationComponent } from './components/component-communication/component-communication.component';
 import { LifecycleComponent } from './components/lifecycle/lifecycle.component';
-import { ReactiveFormsComponent } from './components/reactive-forms/reactive-forms.component';
-import { ItemListComponent } from './components/todo-app/item-list/item-list.component';
-import { AddItemComponent } from './components/todo-app/add-item/add-item.component';
-import { BookmarkComponent } from './components/todo-app/bookmark/bookmark.component';
 
 
 const routes: Routes = [
-  { path: 'data-binding', component: DataBindingComponent },
-  { path: 'directives', component: DirectivesComponent },
-  { path: 'component-communication', component: ComponentCommunicationComponent },
-  { path: 'lifecycle', component: LifecycleComponent },
-  { path: 'reactive-forms', component: ReactiveFormsComponent },
-  {path:'list', component:ItemListComponent},
-  {path:'bookmark', component:BookmarkComponent},
-  {path: 'add',component:AddItemComponent},
-  {path:'edit/:id',component:AddItemComponent},
-  { path: '', redirectTo: '/list', pathMatch: 'full' },
+  { path: 'intro', loadChildren: () => import('./features/introduction/introduction.module').then(m => m.IntroductionModule) },
+  { path: 'list', loadChildren: () => import('./features/todo/item-list/item-list.module').then(m => m.ItemListModule) },
+  { path: 'bookmark', loadChildren: () => import('./features/todo/bookmark/bookmark.module').then(m => m.BookmarkModule) },
+  { path: 'add', loadChildren: () => import('./features/todo/add-item/add-item.module').then(m => m.AddItemModule) },
+  { path: 'edit/:id', loadChildren: () => import('./features/todo/add-item/add-item.module').then(m => m.AddItemModule) },
+ { path: 'directives', loadChildren: () => import('./features/directives/directives.module').then(m => m.DirectivesModule) },
+ { path: 'data-binding', loadChildren: () => import('./features/data-binding/data-binding.module').then(m => m.DataBindingModule) },
+ { path: 'reactive-form', loadChildren: () => import('./features/reactive-form/reactive-form.module').then(m => m.ReactiveFormModule) },
+ {path: 'lifecycle', component:LifecycleComponent},
+ { path: '', redirectTo: '/intro', pathMatch: 'full' },
+
 
 ];
 

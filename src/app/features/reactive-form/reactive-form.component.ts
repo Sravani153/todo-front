@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-reactive-forms',
-  templateUrl: './reactive-forms.component.html',
-  styleUrls: ['./reactive-forms.component.css']
+  selector: 'app-reactive-form',
+  templateUrl: './reactive-form.component.html',
+  styleUrls: ['./reactive-form.component.css']
 })
-export class ReactiveFormsComponent {
+export class ReactiveFormComponent {
   form: FormGroup;
   submitted: boolean = false;
   formData: any;
@@ -27,4 +27,3 @@ export class ReactiveFormsComponent {
     this.formData = this.form.value;
   }
 }
-

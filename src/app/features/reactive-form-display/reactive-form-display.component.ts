@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-reactive-form-display',
   templateUrl: './reactive-form-display.component.html',
   styleUrls: ['./reactive-form-display.component.css']
 })
-export class ReactiveFormDisplayComponent implements OnInit, OnChanges, OnDestroy {
+export class ReactiveFormDisplayComponent {
   @Input() formData: any;
 
   ngOnInit() {
@@ -19,5 +19,5 @@ export class ReactiveFormDisplayComponent implements OnInit, OnChanges, OnDestro
   ngOnDestroy() {
     console.log('OnDestroy: ReactiveFormDisplayComponent destroyed.');
   }
-}
 
+}
