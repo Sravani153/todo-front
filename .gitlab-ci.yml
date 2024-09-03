@@ -1,11 +1,11 @@
 stages:
   - build
   - docker_build
-  - deploy
+  # - deploy
 
 # Build stage: Build the Angular application
 build:
-  image: node:latest
+  image: node:18.10.0 
   stage: build
   script:
     - npm install
@@ -29,13 +29,13 @@ docker_build:
     # Push the Docker image to the GitLab Container Registry
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
-# Deploy stage: Deploy the application to OpenShift
-deploy:
-  image: registry.access.redhat.com/openshift3/oc:latest
-  stage: deploy
-  script:
-    - oc login $OPENSHIFT_SERVER --token=$OPENSHIFT_TOKEN --insecure-skip-tls-verify
-    - oc project $OPENSHIFT_PROJECT
-    - oc new-app $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA
-    - oc expose svc/angular-app
-    - oc rollout status dc/angular-app
+# # Deploy stage: Deploy the application to OpenShift
+# deploy:
+#   image: registry.access.redhat.com/openshift3/oc:latest
+#   stage: deploy
+#   script:
+#     - oc login $OPENSHIFT_SERVER --token=$OPENSHIFT_TOKEN --insecure-skip-tls-verify
+#     - oc project $OPENSHIFT_PROJECT
+#     - oc new-app $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA
+#     - oc expose svc/angular-app
+#     - oc rollout status dc/angular-app
