@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular application
-FROM node:18.10.0 AS build
+FROM node:latest AS build
 WORKDIR /app
 
 # Install dependencies
