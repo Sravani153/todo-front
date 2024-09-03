@@ -39,5 +39,3 @@ deploy:
     - oc new-app $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA
     - oc expose svc/angular-app
     - oc rollout status dc/angular-app
-  only:
-    - main
