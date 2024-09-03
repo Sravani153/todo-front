@@ -15,16 +15,19 @@ build:
       - dist/
     expire_in: 1 hour
 
-# Docker Build stage: Build and push Docker image to a container registry
+# Docker Build stage: Build and push Docker image to GitLab Container Registry
 docker_build:
   image: docker:24.0.5
   stage: docker_build
   services:
     - docker:24.0.5-dind
   script:
-    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-    - docker build -t $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA .
-    - docker push $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA
+    # Log in to the GitLab Container Registry
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    # Build the Docker image
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    # Push the Docker image to the GitLab Container Registry
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   only:
     - main
 
