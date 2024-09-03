@@ -1,0 +1,31 @@
+stages:
+  - build
+  - deploy
+
+# Build stage: Build the Angular application
+build:
+  image: node:18.10.0
+  stage: build
+  script:
+    - npm install
+    - npm run build -- --configuration production
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+# Deploy stage: Deploy the application to OpenShift
+deploy:
+  image: registry.access.redhat.com/openshift3/oc:latest
+  stage: deploy
+  script:
+    - oc login $OPENSHIFT_SERVER --token=$OPENSHIFT_TOKEN --insecure-skip-tls-verify
+    - oc project $OPENSHIFT_PROJECT
+    - oc new-build --binary --name=angular-app --docker-image=nginx:alpine --labels="app=angular-app"
+    - oc start-build angular-app --from-dir=./dist --follow
+    - oc new-app angular-app
+    - oc expose svc/angular-app
+    - oc rollout status dc/angular-app
+  only:
+    - main
+
