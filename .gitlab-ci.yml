@@ -17,10 +17,10 @@ build:
 
 # Docker Build stage: Build and push Docker image to GitLab Container Registry
 docker_build:
-  image: docker:24.0.5
+  image: docker:27.0
   stage: docker_build
   services:
-    - docker:24.0.5-dind
+    - docker:27.0-dind
   script:
     # Log in to the GitLab Container Registry
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
