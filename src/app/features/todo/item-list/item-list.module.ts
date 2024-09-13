@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -29,6 +30,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule
   ]
 })
 export class ItemListModule { }

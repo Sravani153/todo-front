@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/item.service';
+import { UserstorageService } from 'src/app/storage/userstorage.service';
 
 @Component({
   selector: 'app-add-item',
@@ -18,7 +19,8 @@ export class AddItemComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private itemService: ItemService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userStorage: UserstorageService
   ) {
     this.itemForm = this.fb.group({
       id: [''],
@@ -107,5 +109,9 @@ export class AddItemComponent implements OnInit {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const valid = emailRegex.test(control.value);
     return valid ? null : { 'invalidEmail': true };
+  }
+
+  signOut(): void {
+    this.userStorage.signedOut();
   }
 }
