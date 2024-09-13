@@ -66,8 +66,6 @@ import { IntroductionModule } from './features/introduction/introduction.module'
     ItemListModule,
     IntroductionModule,
 
-
-
   ],
   providers: [],
   bootstrap: [AppComponent]
