@@ -1,5 +1,6 @@
 stages:
   - build
+  - docker_build
   - deploy
 
 # Build stage: Build the Angular application
@@ -14,6 +15,22 @@ build:
       - dist/
     expire_in: 1 hour
 
+# Docker Build stage: Build and push Docker image to GitLab Container Registry
+docker_build:
+  image: docker:27.0
+  stage: docker_build
+  services:
+    - docker:27.0-dind
+  script:
+    # Log in to the GitLab Container Registry
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    # Build the Docker image
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    # Push the Docker image to the GitLab Container Registry
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  only:
+    - master
+
 # Deploy stage: Deploy the application to OpenShift
 deploy:
   image: registry.access.redhat.com/openshift3/oc:latest
@@ -21,11 +38,9 @@ deploy:
   script:
     - oc login $OPENSHIFT_SERVER --token=$OPENSHIFT_TOKEN --insecure-skip-tls-verify
     - oc project $OPENSHIFT_PROJECT
-    - oc new-build --binary --name=angular-app --docker-image=nginx:alpine --labels="app=angular-app"
-    - oc start-build angular-app --from-dir=./dist --follow
-    - oc new-app angular-app
+    - oc new-app $DOCKER_REGISTRY/$DOCKER_PROJECT/angular-app:$CI_COMMIT_SHORT_SHA
     - oc expose svc/angular-app
     - oc rollout status dc/angular-app
   only:
-    - main
+    - master
 
