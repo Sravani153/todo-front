@@ -45,6 +45,13 @@ export class ItemService {
     });
   }
 
+  deleteItems(ids: string[]): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/delete`, {
+        headers: this.createAuthorizationHeader(),
+        body: ids
+    });
+}
+
   getBookmarkedItems(): Observable<Item[]> {
     return this.http.get<Item[]>(`${this.baseUrl}/bookmarked`, {
       headers: this.createAuthorizationHeader()

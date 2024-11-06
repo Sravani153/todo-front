@@ -1,0 +1,23 @@
+<app-navbar [isAdmin]="isAdmin"></app-navbar>
+<div class="profile-container" *ngIf="profile">
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>User Profile</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="profile-details">
+        <div class="profile-icon">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div class="profile-info">
+          <p><strong>Name:</strong> {{ profile.name }}</p>
+          <p><strong>Email:</strong> {{ profile.email }}</p>
+          <p><strong>Role:</strong> {{ profile.role }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="!isAdmin">
+      <button mat-button color="warn" (click)="deleteProfile()">Delete Profile</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

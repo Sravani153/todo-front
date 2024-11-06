@@ -13,19 +13,21 @@ import { UserstorageService } from 'src/app/storage/userstorage.service';
 export class AddItemComponent implements OnInit {
   itemForm: FormGroup;
   isEdit = false;
+  isAdmin: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private itemService: ItemService,
-    private snackBar: MatSnackBar,
+    public snackBar: MatSnackBar,
     private userStorage: UserstorageService
   ) {
     this.itemForm = this.fb.group({
       id: [''],
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
-      dateOfBirth: ['', Validators.required],
+      dateOfBirth: ['', [Validators.required, this.futureDateValidator]], // Add custom validator
       gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, this.customEmailValidator]],
       phoneNumbers: this.fb.array([]),
@@ -34,17 +36,26 @@ export class AddItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.userStorage.isAdminLoggedIn();
     const id = this.route.snapshot.queryParamMap.get('id');
     if (id) {
       this.isEdit = true;
-      this.itemService.getItemById(id).subscribe(item => {
-        this.itemForm.patchValue(item);
-        this.phoneNumbers.clear();
-        item.phoneNumbers.forEach((phoneNumber: string) => {
-          this.phoneNumbers.push(this.fb.control(phoneNumber, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]));
-        });
-      });
+      this.loadItem(id);
     }
+  }
+
+  public loadItem(id: string): void {
+    this.isLoading = true;
+    this.itemService.getItemById(id).subscribe(item => {
+      this.itemForm.patchValue(item);
+      this.phoneNumbers.clear();
+      item.phoneNumbers.forEach((phoneNumber: string) => {
+        this.phoneNumbers.push(this.fb.control(phoneNumber, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]));
+      });
+      this.isLoading = false;
+    }, () => {
+      this.isLoading = false;
+    });
   }
 
   get phoneNumbers(): FormArray {
@@ -66,27 +77,25 @@ export class AddItemComponent implements OnInit {
     }
 
     const item = this.itemForm.value;
+    this.isLoading = true;
+    console.log(this.itemForm.value);
 
-    if (this.isEdit) {
-      this.itemService.updateItem(item.id, item).subscribe({
-        next: () => {
-          this.showSnackBar('Item updated successfully!', 'Close');
-          this.router.navigate(['/list']);
-        },
-        error: (error) => this.handleError(error)
-      });
-    } else {
-      this.itemService.createItem(item).subscribe({
-        next: () => {
-          this.showSnackBar('Item created successfully!', 'Close');
-          this.router.navigate(['/list']);
-        },
-        error: (error) => this.handleError(error)
-      });
-    }
+    const saveOperation = this.isEdit
+      ? this.itemService.updateItem(item.id, item)
+      : this.itemService.createItem(item);
+
+    saveOperation.subscribe({
+      next: () => {
+        this.showSnackBar(`Item ${this.isEdit ? 'updated' : 'created'} successfully!`, 'Close');
+        this.router.navigateByUrl('/list');
+
+      },
+      error: (error) => this.handleError(error),
+      complete: () => this.isLoading = false
+    });
   }
 
-  private handleError(error: any): void {
+  public handleError(error: any): void {
     if (error.error && error.error.message) {
       if (error.error.message.includes('Email is already in use')) {
         this.showSnackBar('Email already exists.', 'Close');
@@ -96,9 +105,10 @@ export class AddItemComponent implements OnInit {
         this.showSnackBar('An error occurred. Please try again.', 'Close');
       }
     }
+    this.isLoading = false;
   }
 
-  private showSnackBar(message: string, action: string): void {
+  public showSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
       duration: 3000
     });
@@ -106,12 +116,15 @@ export class AddItemComponent implements OnInit {
 
   // Custom email validator to ensure a valid email format
   private customEmailValidator(control: AbstractControl): { [key: string]: any } | null {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Ensure email ends with @gmail.com
     const valid = emailRegex.test(control.value);
     return valid ? null : { 'invalidEmail': true };
   }
 
-  signOut(): void {
-    this.userStorage.signedOut();
+  // Custom validator to prevent future date selection
+  private futureDateValidator(control: AbstractControl): { [key: string]: any } | null {
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+    return selectedDate > today ? { 'futureDate': true } : null;
   }
 }

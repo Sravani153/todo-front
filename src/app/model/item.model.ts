@@ -4,6 +4,6 @@ export interface Item {
   dateOfBirth: Date;
   gender: string;
   email: string;
-  phoneNumbers: any;
+  phoneNumbers: string[];
   bookmarked: boolean;
 }

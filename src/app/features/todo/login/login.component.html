@@ -6,10 +6,15 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput formControlName="email" required>
-          <mat-error *ngIf="signInForm.get('email')?.invalid && signInForm.get('email')?.touched">
+          <input matInput formControlName="email" placeholder="Enter your email" type="email" required>
+          <!-- Show error only if the input is touched or dirty and invalid -->
+           <mat-error *ngIf="signInForm.get('email')?.hasError('required') && signInForm.get('email')?.touched">
+            Email is required
+           </mat-error>
+
+           <mat-error *ngIf="signInForm.get('email')?.hasError('email') && signInForm.get('email')?.touched">
             Please enter a valid email address
-          </mat-error>
+           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -23,8 +28,12 @@
           </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="signInForm.invalid">Login</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="signInForm.invalid" (click)="onSubmit()">Login</button>
       </form>
     </mat-card-content>
+
+<mat-card-actions>
+  <button mat-button color="accent" routerLink="/signup">Don't have an account? Sign Up</button>
+</mat-card-actions>
   </mat-card>
 </div>

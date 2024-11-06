@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./component-communication.component.css']
 })
 export class ComponentCommunicationComponent {
-  parentMessage: string = 'Message from parent to  child';
+  childMessage = 'Hello from parent!';
 }
 
 

@@ -17,11 +17,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NavbarModule } from '../navbar/navbar.module';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
   declarations: [
-    AddItemComponent
+    AddItemComponent,
   ],
   imports: [
     CommonModule,
@@ -38,9 +41,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatToolbarModule,
     MatTabsModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-  ]
+    NavbarModule,
+  ],
 })
 export class AddItemModule { }

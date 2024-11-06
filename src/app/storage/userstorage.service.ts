@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserstorageService {
-
   constructor(private router: Router) { }
 
   private readonly TOKEN_KEY = 'authToken';
@@ -27,6 +27,16 @@ export class UserstorageService {
     return null;
   }
 
+  getEmail(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = this.parseJwt(token);
+      return payload?.email || null;
+    }
+    return null;
+  }
+
+
     // Method to check if the user is an admin
     isAdminLoggedIn(): boolean {
       return this.getUserRole() === 'ADMIN';
@@ -41,9 +51,9 @@ export class UserstorageService {
       return !!this.getToken();
     }
 
-  signedOut(): void {
+
+  clearSession(): void {
     localStorage.removeItem(this.TOKEN_KEY);
-    this.router.navigate(['/login']);
   }
 
   private parseJwt(token: string): any {

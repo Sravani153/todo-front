@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserstorageService } from 'src/app/storage/userstorage.service';
-import { AuthResponse } from 'src/app/model/AuthResponse';
 
 @Component({
   selector: 'app-login',
@@ -70,6 +68,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
   }
 

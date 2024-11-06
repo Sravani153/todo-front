@@ -2,8 +2,8 @@
   <h2>Component Communication</h2>
 
   <div class="parent">
-    <h3>Parent Component</h3>
-    <p>Message to Child: {{ parentMessage }}</p>
-    <app-child [childMessage]="parentMessage"></app-child>
+    <h2>Parent Component</h2>
+    <p>Message from Parent: {{ childMessage }}</p>
+    <app-child [message]="childMessage"></app-child>
   </div>
-</div>
+  </div>

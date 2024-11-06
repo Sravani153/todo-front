@@ -27,6 +27,9 @@ import { AddItemModule } from './features/todo/add-item/add-item.module';
 import { BookmarkModule } from './features/todo/bookmark/bookmark.module';
 import { ItemListModule } from './features/todo/item-list/item-list.module';
 import { IntroductionModule } from './features/introduction/introduction.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NavbarModule } from './features/todo/navbar/navbar.module';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -50,11 +53,13 @@ import { IntroductionModule } from './features/introduction/introduction.module'
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
+    MatCardModule,
     MatTableModule,
     MatSelectModule,
     MatRadioModule,
     MatToolbarModule,
     MatTabsModule,
+    MatCheckboxModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -65,6 +70,7 @@ import { IntroductionModule } from './features/introduction/introduction.module'
     BookmarkModule,
     ItemListModule,
     IntroductionModule,
+    NavbarModule
 
   ],
   providers: [],

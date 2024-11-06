@@ -4,69 +4,106 @@ import { ItemService } from 'src/app/services/item.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Item } from 'src/app/model/item.model';
 import { UserstorageService } from 'src/app/storage/userstorage.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTableDataSource } from '@angular/material/table';
 
-  @Component({
-    selector: 'app-bookmark',
-    templateUrl: './bookmark.component.html',
-    styleUrls: ['./bookmark.component.css']
-  })
-  export class BookmarkComponent implements OnInit {
-    bookmarkedItems: Item[] = [];
-    displayedColumns: string[] = ['name', 'dob', 'gender', 'email', 'phoneNumbers', 'actions'];
-    isAdmin: boolean = false;
-    isUser: boolean = false;
+@Component({
+  selector: 'app-bookmark',
+  templateUrl: './bookmark.component.html',
+  styleUrls: ['./bookmark.component.css']
+})
+export class BookmarkComponent implements OnInit {
+  bookmarkedItems: MatTableDataSource<Item> = new MatTableDataSource<Item>();  // Use MatTableDataSource here
 
-    constructor(private router: Router, private itemService:ItemService, private snackBar: MatSnackBar, private userStorage: UserstorageService ) {}
+  displayedColumns: string[] = ['name', 'dateOfBirth', 'gender', 'email', 'phoneNumbers', 'actions'];
+  isAdmin: boolean = false;
+  isLoading: boolean = false;
+  selection = new SelectionModel<Item>(true, []);
 
-    ngOnInit(): void {
-      this.isAdmin = this.userStorage.isAdminLoggedIn();
-      this.isUser = this.userStorage.isUserLoggedIn();
-      this.updateDisplayedColumns();
-      this.loadBookmarkedItems();
-    }
+  constructor(
+    private router: Router,
+    private itemService: ItemService,
+    private snackBar: MatSnackBar,
+    private userStorage: UserstorageService
+  ) {}
 
-    loadBookmarkedItems(): void {
-      this.itemService.getBookmarkedItems().subscribe(
-        (items) => {
-          this.bookmarkedItems = items;
-          this.showSnackBar('Bookmarked items loaded successfully.', 'Close');
-        },
-        (error) => {
-          this.showSnackBar('Failed to load bookmarked items.', 'Close');
-        }
-      );
-    }
+  ngOnInit(): void {
+    this.isAdmin = this.userStorage.isAdminLoggedIn();
+    this.updateDisplayedColumns();
+    this.loadBookmarkedItems();
+  }
 
-    updateDisplayedColumns(): void {
-      if (this.isAdmin) {
-        this.displayedColumns = ['name', 'dob', 'gender', 'email', 'phoneNumbers', 'actions'];
-      } else {
-        this.displayedColumns = ['name', 'dob', 'gender', 'email', 'phoneNumbers',];
+  // loadBookmarkedItems(): void {
+  //   this.isLoading = true;
+  //   this.itemService.getBookmarkedItems().subscribe(
+  //     (items: Item[]) => {
+  //       const bookmarked = items.filter(item => item.bookmarked);  // Filter bookmarked items
+  //       this.bookmarkedItems.data = bookmarked;  // Assign filtered items to MatTableDataSource
+  //       this.isLoading = false;
+  //     },
+  //     (error) => {
+  //       console.error('Failed to load bookmarked items');
+  //       this.isLoading = false;
+  //     }
+  //   );
+  // }
+
+  loadBookmarkedItems(): void {
+    this.isLoading = true;
+    this.itemService.getBookmarkedItems().subscribe(
+      (items: Item[]) => {
+        const bookmarked = items.filter(item => item.bookmarked);  // Filter only bookmarked items
+        this.bookmarkedItems = new MatTableDataSource(bookmarked);  // Assign to MatTableDataSource
+        this.isLoading = false;
+        this.snackBar.open('Bookmarked items loaded successfully.', 'Close', { duration: 3000 });
+      },
+      (error) => {
+        console.error('Failed to load bookmarked items');
+        this.isLoading = false;
+        this.snackBar.open('Failed to load bookmarked items.', 'Close', { duration: 3000 });
       }
-    }
+    );
+  }
 
-    onEdit(id: string): void {
-      this.router.navigate(['/add'], { queryParams: { id } });
-    }
 
-    onDelete(id: string): void {
+
+  handleToggleBookmark(updatedItem: Item): void {
+    if (updatedItem.bookmarked) {
+      this.bookmarkedItems.data.push(updatedItem); // Add to the data source
+    } else {
+      this.bookmarkedItems.data = this.bookmarkedItems.data.filter(item => item.id !== updatedItem.id); // Remove from the data source
+    }
+  }
+
+  updateDisplayedColumns(): void {
+    if (!this.isAdmin) {
+      this.displayedColumns = ['name', 'dateOfBirth', 'gender', 'email', 'phoneNumbers'];
+    }
+  }
+
+  onEdit(id: string): void {
+    this.isLoading = true;
+    this.router.navigate(['/add'], { queryParams: { id } });
+  }
+
+  onDelete(id: string): void {
+    const confirmation = confirm('Are you sure you want to delete this item?');
+    if (confirmation) {
+      this.isLoading = true;
       this.itemService.deleteItem(id).subscribe(() => {
-        this.loadBookmarkedItems();
         this.showSnackBar('Item deleted successfully!', 'Close');
+        this.loadBookmarkedItems(); // Reload after deletion
+      });
+    } else {
+      this.snackBar.open('Delete operation canceled', 'Close', {
+        duration: 3000,
       });
     }
-
+  }
 
   private showSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
       duration: 3000
     });
   }
-
-  signOut(): void {
-    this.userStorage.signedOut();
-    this.router.navigate(['/login']);
-  }
 }
-
-

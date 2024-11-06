@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BookmarkRoutingModule } from './bookmark-routing.module';
@@ -12,6 +12,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { NavbarModule } from '../navbar/navbar.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { CustomTableModule } from '../../custom-table/custom-table.module';
 
 
 @NgModule({
@@ -31,8 +36,12 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    NavbarModule,
+    CustomTableModule
+  ],
+   exports:[NavbarComponent]
 
-
-  ]
 })
 export class BookmarkModule { }

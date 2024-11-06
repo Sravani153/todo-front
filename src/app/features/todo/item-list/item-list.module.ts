@@ -12,12 +12,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { NavbarModule } from '../navbar/navbar.module';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { CustomTableModule } from '../../custom-table/custom-table.module';
 
 
 @NgModule({
   declarations: [
     ItemListComponent
-  ],
+    ],
   imports: [
     CommonModule,
     ItemListRoutingModule,
@@ -31,7 +40,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HttpClientModule,
     ReactiveFormsModule,
     MatTableModule,
-    MatPaginatorModule
-  ]
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatDialogModule,
+    CdkTableModule,
+    NavbarModule,
+    CustomTableModule
+  ],
+  // exports:[NavbarComponent]
+
 })
 export class ItemListModule { }

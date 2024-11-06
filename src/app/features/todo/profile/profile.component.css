@@ -1,0 +1,29 @@
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.profile-card {
+  width: 400px;
+  text-align: center;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.profile-icon mat-icon {
+  font-size: 80px;
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+.profile-info p {
+  font-size: 16px;
+  margin: 5px 0;
+}

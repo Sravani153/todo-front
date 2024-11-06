@@ -8,4 +8,3 @@ export class CustomPipe implements PipeTransform {
     return value ? `User: ${value.toUpperCase()}` : '';
   }
 }
-
