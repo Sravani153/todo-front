@@ -13,7 +13,7 @@ import { UserstorageService } from 'src/app/storage/userstorage.service';
   templateUrl: './custom-table.component.html',
   styleUrls: ['./custom-table.component.css']
 })
-export class CustomTableComponent<T extends Item> implements OnInit {
+export class CustomTableComponent<T> implements OnInit {
   @Input() dataSource: MatTableDataSource<T> = new MatTableDataSource<T>();
   @Input() displayedColumns: string[] = [];
   @Input() selection: SelectionModel<T>;
@@ -30,6 +30,8 @@ export class CustomTableComponent<T extends Item> implements OnInit {
   bookmarkedItems: Item[] = [];
   isLoading: boolean = false;
   isAdmin: boolean = false;
+  @Input() shouldLoadItems: boolean = true;
+
 
   constructor(private itemService: ItemService, private snackBar: MatSnackBar, private userStorage: UserstorageService) {
     this.dataSource = new MatTableDataSource<T>();
@@ -39,7 +41,9 @@ export class CustomTableComponent<T extends Item> implements OnInit {
   ngOnInit(): void {
     this.isAdmin = this.userStorage.isAdminLoggedIn();
     this.dataSource.sort = this.sort;
-    this.loadItems();
+    if (this.shouldLoadItems) {
+      this.loadItems();
+    }
   }
 
   ngAfterViewInit(): void {

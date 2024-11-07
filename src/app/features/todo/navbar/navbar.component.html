@@ -4,6 +4,8 @@
 
   <button mat-button class="button" routerLink="/list">Item List</button>
 
+  <button mat-button class="button"  *ngIf="isAdmin" routerLink="/accounts">All Accounts</button>
+
   <button mat-fab class="custom-fab" *ngIf="isAdmin" routerLink="/add">
     <mat-icon>add</mat-icon>
   </button>

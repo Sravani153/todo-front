@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'profile', loadChildren: () => import('./features/todo/profile/profile.module').then(m => m.ProfileModule) },
   { path: 'signup', loadChildren: () => import('./features/todo/signup/signup.module').then(m => m.SignupModule) },
   { path: 'custom-table', loadChildren: () => import('./features/custom-table/custom-table.module').then(m => m.CustomTableModule) },
+  { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule) },
 
 
 ];

@@ -25,7 +25,9 @@ createAccount(account: AccountDTO): Observable<AccountDTO> {
 }
 
 getAllAccounts(): Observable<AccountDTO[]> {
-  return this.http.get<AccountDTO[]>(`${this.baseUrl}/`);
+  return this.http.get<AccountDTO[]>(`${this.baseUrl}/`, {
+    headers: this.createAuthorizationHeader()
+  });
 }
 
 deleteAccount(email: string): Observable<void> {
